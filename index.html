@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7f5f0">
+<title>Pocket Notes｜隨身記事本</title>
+<style>
+:root{--bg:#f7f5f0;--panel:#fff;--ink:#292b2a;--muted:#858982;--line:#e9e7e0;--accent:#637c70;--accent2:#e9f0eb;--shadow:0 12px 35px #343a3210}
+[data-theme="dark"]{--bg:#1d211f;--panel:#282e2a;--ink:#edf0eb;--muted:#a6afa7;--line:#3b443e;--accent:#a5c3ad;--accent2:#34443a;--shadow:0 12px 35px #0003}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Noto Sans TC",sans-serif;transition:background .2s,color .2s}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{max-width:1180px;margin:auto;padding:30px 24px 60px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.brand{display:flex;gap:12px;align-items:center}.logo{width:42px;height:42px;border-radius:14px;background:var(--accent2);display:grid;place-items:center;font-size:22px}.brand h1{font-size:20px;margin:0;letter-spacing:.02em}.brand p{margin:0;color:var(--muted);font-size:12px}.top-actions{display:flex;gap:9px}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:12px;padding:9px 14px}.btn:hover{border-color:var(--accent)}.btn.primary{background:var(--accent);border-color:var(--accent);color:white}.btn.icon{width:40px;height:40px;padding:0;font-size:17px}
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:24px}.sidebar,.editor,.note-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.sidebar{padding:20px;height:max-content}.new-note{width:100%;margin-bottom:22px;padding:12px}.side-label{font-size:11px;color:var(--muted);letter-spacing:.12em;margin:18px 0 9px}.nav{display:flex;flex-direction:column;gap:5px}.nav button{display:flex;justify-content:space-between;text-align:left;border:0;background:transparent;color:var(--muted);padding:9px 11px;border-radius:10px}.nav button.active,.nav button:hover{background:var(--accent2);color:var(--ink)}.count{font-size:12px}
+.main{min-width:0}.workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.9fr);gap:15px;align-items:start}.toolbar{display:flex;gap:12px;align-items:center;margin-bottom:17px}.search-wrap{position:relative;flex:1}.search-wrap span{position:absolute;left:14px;top:8px;color:var(--muted)}.search{width:100%;padding:10px 14px 10px 40px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink);outline:none}.search:focus,textarea:focus,input:focus,select:focus{border-color:var(--accent);outline:2px solid color-mix(in srgb,var(--accent) 18%,transparent)}
+.notes-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.note-card{padding:17px;text-align:left;min-height:155px;cursor:pointer;transition:transform .15s,border-color .15s}.note-card:hover{transform:translateY(-2px);border-color:var(--accent)}.note-card.selected{border:1.5px solid var(--accent)}.card-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.tag{font-size:11px;color:var(--accent);background:var(--accent2);padding:3px 9px;border-radius:20px}.star{color:#d59d35;font-size:17px}.note-card h3{font-size:16px;margin:12px 0 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.preview{color:var(--muted);font-size:13px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:42px;white-space:pre-wrap}.date{font-size:11px;color:var(--muted);margin-top:12px}
+.editor[hidden]{display:none}.editor{padding:22px;position:sticky;top:18px;min-height:520px}.editor-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.editor-actions{display:flex;gap:7px}.editor input.title{width:100%;font-size:23px;font-weight:650;border:0;border-bottom:1px solid var(--line);padding:8px 0 13px;background:transparent;color:var(--ink);outline:none}.editor input.title:focus{outline:none;border-color:var(--accent)}.meta{display:flex;gap:10px;margin:14px 0}.meta select{border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--ink);padding:7px 10px}.editor textarea{width:100%;min-height:310px;resize:vertical;border:0;background:transparent;color:var(--ink);line-height:1.9;outline:none;padding:8px 0}.editor textarea:focus{outline:none}.save-status{font-size:11px;color:var(--muted);display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px}.empty{grid-column:1/-1;text-align:center;padding:65px 15px;color:var(--muted);background:var(--panel);border:1px dashed var(--line);border-radius:18px}.empty b{display:block;color:var(--ink);font-size:16px;margin-bottom:6px}.mobile-editor{display:none}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#29332d;color:white;padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .2s}.toast.show{opacity:1}
+@media(max-width:850px){.workspace{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.sidebar{padding:13px}.new-note{width:auto;margin:0 8px 0 0}.side-label{display:none}.sidebar{display:flex;align-items:center;gap:8px;overflow:auto}.nav{flex-direction:row}.nav button{white-space:nowrap}.editor{position:static;min-height:400px}.notes-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.app{padding:18px 13px 40px}.top{margin-bottom:18px}.brand p{display:none}.top-actions .btn:not(.icon){display:none}.layout{gap:14px}.toolbar{gap:8px}.notes-grid{grid-template-columns:1fr}.note-card{min-height:130px}.editor{padding:16px}.editor textarea{min-height:260px}.editor input.title{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+ <div class="brand"><div class="logo">✎</div><div><h1>Pocket Notes</h1><p>把想法，好好收起來。</p></div></div>
+ <div class="top-actions">
+  <button class="btn" id="exportBtn">匯出備份</button><button class="btn" id="importBtn">匯入備份</button><input type="file" id="importFile" accept="application/json,.json" hidden>
+  <button class="btn icon" id="themeBtn" aria-label="切換深色模式" title="切換深色模式">☾</button>
+ </div>
+</header>
+<div class="layout">
+ <aside class="sidebar">
+  <button class="btn primary new-note" id="newBtn">＋ 新增記事</button>
+  <div class="nav" id="filters">
+   <button class="active" data-filter="all">全部記事 <span class="count" id="allCount">0</span></button>
+   <button data-filter="starred">★ 已收藏 <span class="count" id="starCount">0</span></button>
+  </div>
+  <div class="side-label">分類</div>
+  <div class="nav" id="categories">
+   <button data-filter="課業">課業</button><button data-filter="生活">生活</button><button data-filter="靈感">靈感</button><button data-filter="其他">其他</button>
+  </div>
+ </aside>
+ <main class="main">
+  <div class="toolbar"><div class="search-wrap"><span>⌕</span><input class="search" id="search" type="search" placeholder="搜尋標題或內容…"></div></div>
+  <div class="workspace"><div class="notes-grid" id="notesGrid"></div><div id="editorMount"></div></div>
+ </main>
+</div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(() => {
+ const KEY='pocket-notes-v1', THEME='pocket-notes-theme';
+ const $=id=>document.getElementById(id);
+ const grid=$('notesGrid'), title=$('noteTitle'), body=$('noteBody');
+ let notes=[], activeId=null, filter='all', query='', saveTimer=null;
+ try{notes=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(notes))notes=[];}catch{notes=[];}
+ const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const dateText=t=>new Intl.DateTimeFormat('zh-TW',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(t));
+ function persist(){localStorage.setItem(KEY,JSON.stringify(notes));}
+ function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),1800);}
+ function current(){return notes.find(n=>n.id===activeId);}
+ function visible(){
+  return notes.filter(n=>{
+   const matchFilter=filter==='all'||(filter==='starred'?n.starred:n.category===filter);
+   const matchQuery=!query||(n.title+' '+n.content).toLowerCase().includes(query.toLowerCase());
+   return matchFilter&&matchQuery;
+  }).sort((a,b)=>b.updatedAt-a.updatedAt);
+ }
+ function render(){
+  $('allCount').textContent=notes.length;$('starCount').textContent=notes.filter(n=>n.starred).length;
+  document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===filter));
+  const list=visible();
+  if(!list.length){grid.innerHTML='<div class="empty"><b>'+(query?'找不到符合的記事':'這裡還沒有記事')+'</b>'+(query?'試試其他關鍵字。':'按下「新增記事」，把第一個想法記下來吧。')+'</div>';return;}
+  grid.innerHTML=list.map(n=>`<article class="note-card ${n.id===activeId?'selected':''}" data-id="${esc(n.id)}" tabindex="0" role="button" aria-label="編輯 ${esc(n.title||'未命名記事')}">
+   <div class="card-head"><span class="tag">${esc(n.category)}</span><span class="star">${n.starred?'★':''}</span></div>
+   <h3>${esc(n.title||'未命名記事')}</h3><div class="preview">${esc(n.content||'尚無內容')}</div><div class="date">更新於 ${dateText(n.updatedAt)}</div>
+  </article>`).join('');
+ }
+ function openNote(id){
+  activeId=id;const n=current();
+  if(!n){$('editor').hidden=true;render();return;}
+  $('editor').hidden=false;$('noteTitle').value=n.title;$('noteBody').value=n.content;$('noteCategory').value=n.category;
+  $('starBtn').textContent=n.starred?'★ 已收藏':'☆ 收藏';$('saveStatus').textContent='已儲存';render();
+ }
+ function createNote(){
+  const now=Date.now(),n={id:uid(),title:'',content:'',category:'其他',starred:false,createdAt:now,updatedAt:now};
+  notes.unshift(n);persist();openNote(n.id);$('noteTitle').focus();toast('已建立新記事');
+ }
+ function scheduleSave(){
+  $('saveStatus').textContent='儲存中…';clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{
+   const n=current();if(!n)return;
+   n.title=$('noteTitle').value;n.content=$('noteBody').value;n.category=$('noteCategory').value;n.updatedAt=Date.now();
+   persist();$('saveStatus').textContent='已自動儲存';render();
+  },350);
+ }
+ $('newBtn').addEventListener('click',createNote);
+ grid.addEventListener('click',e=>{const card=e.target.closest('[data-id]');if(card)openNote(card.dataset.id);});
+ grid.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-id]')){e.preventDefault();openNote(e.target.dataset.id);}});
+ document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;render();}));
+ $('search').addEventListener('input',e=>{query=e.target.value;render();});
+ $('exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({app:'Pocket Notes',version:1,exportedAt:new Date().toISOString(),notes},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pocket-notes-backup.json';a.click();URL.revokeObjectURL(a.href);toast('備份檔已匯出');});
+ $('importBtn').addEventListener('click',()=>$('importFile').click());
+ $('importFile').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text()),incoming=Array.isArray(data)?data:data.notes;if(!Array.isArray(incoming))throw Error('格式錯誤');if(!confirm(`匯入 ${incoming.length} 則記事？同 ID 的記事會以備份內容覆蓋。`))return;const map=new Map(notes.map(n=>[n.id,n]));incoming.forEach(n=>{if(n&&typeof n==='object'&&typeof n.id==='string')map.set(n.id,{id:n.id,title:String(n.title||''),content:String(n.content||''),category:['課業','生活','靈感','其他'].includes(n.category)?n.category:'其他',starred:!!n.starred,createdAt:Number(n.createdAt)||Date.now(),updatedAt:Number(n.updatedAt)||Date.now()});});notes=[...map.values()];persist();render();toast('備份匯入完成');}catch{alert('無法讀取這個備份檔，請確認檔案格式。');}finally{e.target.value='';}});
+ function applyTheme(t){document.documentElement.dataset.theme=t;$('themeBtn').textContent=t==='dark'?'☀':'☾';localStorage.setItem(THEME,t);}
+ $('themeBtn').addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
+ applyTheme(localStorage.getItem(THEME)||'light');
+ // Create a starter note on first visit, then open the newest note.
+ if(!notes.length){const now=Date.now();notes=[{id:uid(),title:'歡迎使用 Pocket Notes',content:'這是你的隨身記事本。\n\n點擊左側「新增記事」開始記錄。你的筆記會自動儲存在這個瀏覽器中。\n\n小提醒：可以定期匯出備份，避免清除瀏覽器資料時遺失。',category:'生活',starred:true,createdAt:now,updatedAt:now}];persist();}
+ // Editor is mounted after grid for a compact two-column workspace.
+ const editor=document.createElement('section');editor.className='editor';editor.id='editor';editor.hidden=true;
+ editor.innerHTML=`<div class="editor-top"><span class="side-label" style="margin:0">編輯記事</span><div class="editor-actions"><button class="btn" id="starBtn">☆ 收藏</button><button class="btn" id="deleteBtn">刪除</button></div></div><input class="title" id="noteTitle" maxlength="100" placeholder="記事標題"><div class="meta"><select id="noteCategory" aria-label="記事分類"><option>課業</option><option>生活</option><option>靈感</option><option>其他</option></select></div><textarea id="noteBody" placeholder="在這裡寫下你的想法…"></textarea><div class="save-status"><span id="saveStatus">已儲存</span><span>僅儲存於此裝置</span></div>`;
+ $('editorMount').appendChild(editor);
+ // Bind editor controls after mounting.
+ ['noteTitle','noteBody','noteCategory'].forEach(id=>$(id).addEventListener('input',scheduleSave));
+ $('starBtn').addEventListener('click',()=>{const n=current();if(!n)return;n.starred=!n.starred;n.updatedAt=Date.now();persist();openNote(n.id);});
+ $('deleteBtn').addEventListener('click',()=>{const n=current();if(!n||!confirm('確定要刪除這則記事嗎？此操作無法復原。'))return;notes=notes.filter(x=>x.id!==n.id);persist();activeId=null;$('editor').hidden=true;render();toast('記事已刪除');});
+ // Re-render list and open the starter note for immediate interaction.
+ render();openNote(notes.slice().sort((a,b)=>b.updatedAt-a.updatedAt)[0].id);
+})();
+</script>
+</body>
+</html>
